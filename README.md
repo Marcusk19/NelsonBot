@@ -1,0 +1,2 @@
+# NelsonBot
+Python Discord bot
