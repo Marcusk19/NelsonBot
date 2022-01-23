@@ -77,54 +77,25 @@ class FunStuff(commands.Cog):
 # I went crazy on these listener messages
 
     @commands.Cog.listener("on_message")
-    async def admin_rights(self, message):
+    async def message_parse(self, message):
         if message.author == self.bot.user:
             return
-        if "admin" in message.content:
+        message_lower = message.content.lower()
+        if "admin" in message_lower:
             await message.channel.send(copypasta.admin_talk)
-    
-    @commands.Cog.listener("on_message")
-    async def jg_diff(self, message):
-        if message.author == self.bot.user:
-            return
-        if "jg diff" in message.content:
+        if "jg diff" in message_lower:
             await message.channel.send(copypasta.jg_diff)
-
-    @commands.Cog.listener("on_message")
-    async def nft_steals(self, message):
-        if message.author == self.bot.user:
-            return
-        if "screenshot" in message.content and "nft" in message.content:
+        if "screenshot" in message_lower and "nft" in message_lower:
             await message.channel.send(copypasta.nft_stealing)
-    
-    @commands.Cog.listener("on_message")
-    async def hecker(self, message):
-        if message.author == self.bot.user:
-            return
-        if "hack" in message.content and "nelson" in message.content:
+        if "hack" in message_lower and "nelson" in message_lower:
             await message.channel.send(f'Hey {message.author}, {copypasta.hecker}')
-
-    @commands.Cog.listener("on_message")
-    async def bad_meme(self, message):
-        if message.author == self.bot.user:
-            return
-        if "meme" in message.content:
+        if "meme" in message_lower:
             await message.channel.send(copypasta.bad_meme)
-
-    @commands.Cog.listener("on_message")
-    async def based_reaction(self, message):
-        if message.author == self.bot.user:
-            return
-        lower_message = message.content.lower()
-        if "based" in lower_message:
+        if "based" in message_lower:
             await message.channel.send(copypasta.based_reaction)
-
-    @commands.Cog.listener("on_message")
-    async def periodt_purr(self, message):
-        if message.author == self.bot.user:
-            return
-        if "periodt" in message.content or "purr" in message.content:
+        if "periodt" in message_lower or "purr" in message_lower:
             await message.channel.send(copypasta.periodt_purr)
+
     
     @commands.Cog.listener()
     async def on_member_join(self, ctx, member):
