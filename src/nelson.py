@@ -24,8 +24,8 @@ class FunStuff(commands.Cog):
         self._last_member = None
         self.channel_id = os.getenv('CHANNEL_ID')
     
-    @commands.Cog.listener()
-    async def on_ready(self):
+    @commands.Cog.listener("on_ready")
+    async def ready(self):
         print('Nelson has connected to Discord!')
         self.get_new_post.start()
 
@@ -115,7 +115,8 @@ class FunStuff(commands.Cog):
     async def based_reaction(self, message):
         if message.author == self.bot.user:
             return
-        if "based" in message.content:
+        lower_message = message.content.lower()
+        if "based" in lower_message:
             await message.channel.send(copypasta.based_reaction)
 
     @commands.Cog.listener("on_message")
