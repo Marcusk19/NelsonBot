@@ -17,7 +17,7 @@ You should copy the contents of `example.env` to your .env file and replace the 
 `cp src/example.env .env` <br />
 
 ## External References ##
-These docs are considered very helpful for using discord.py and praw <br />
+Docs for using discore.py and praw<br />
 * [praw](https://praw.readthedocs.io/en/stable/getting_started/quick_start.html)
 * [discord.py](https://discordpy.readthedocs.io/en/stable/index.html)
 
