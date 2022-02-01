@@ -30,10 +30,10 @@ class RedditHandler:
         return posts
     
     def getNewFive(self):
+        output = ""
         for post in self.subreddit.new(limit=5):
-            print(post.title)
-            print(post.url)
-            print("==================")
+            output = output + post.title + '\n' + post.url + '\n' + "======================" + '\n'
+            print(output)
 
     def getNewestPost(self):
         for post in self.subreddit.new(limit=1):

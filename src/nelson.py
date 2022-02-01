@@ -13,6 +13,7 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+startup = True
 
 bot = commands.Bot(command_prefix='/')
 # client = discord.Client()
@@ -24,23 +25,30 @@ class FunStuff(commands.Cog):
         self._last_member = None
         self.channel_id = os.getenv('CHANNEL_ID')
     
+    def get_new_post(self):
+        output_str = ""
+        posts = rh.getTopFive()
+        subreddit = posts[0].subreddit
+        output_str += "Top 5 Posts from r/" + str(subreddit)
+        for post in posts:
+            output_str = output_str + str(post.title) + "\n"
+            output_str += str(post.url) + "\n"
+            output_str += "Upvotes: " + str(post.score) + "\n"
+            output_str += "============================\n"
+        return output_str
+    
     @commands.Cog.listener("on_ready")
     async def ready(self):
         print('Nelson has connected to Discord!')
-        self.get_new_post.start()
+        self.routine_posts.start()
 
     @tasks.loop(hours=24)
-    async def get_new_post(self):
+    async def routine_posts(self):
         channel = self.bot.get_channel(int(self.channel_id))
         # print(str(channel))
-        posts = rh.getTopFive()
-        subreddit = posts[0].subreddit
-        await channel.send("Top 5 Posts from r/" + str(subreddit))
-        for post in posts:
-            await channel.send(str(post.title))
-            await channel.send(str(post.url))
-            await channel.send("Score: " + str(post.score))
-            await channel.send("=========================")
+        output_str = self.get_new_post()
+        if not startup:
+            await channel.send(output_str)
 
 
 # eight ball question event handler
@@ -67,7 +75,12 @@ class FunStuff(commands.Cog):
     
     @commands.command(name='ping', help='Test bot connection')
     async def ping_back(self, ctx):
-        await ctx.send("ping ⊂(￣▽￣)⊃")
+        await ctx.send("ping 👋 😊")
+
+    @commands.command(name='gettop', help='get top 5 posts')
+    async def gettop(self, ctx):
+        self.get_new_post()
+        await ctx.send("check your posts channel 📮")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -103,3 +116,4 @@ class FunStuff(commands.Cog):
         
 bot.add_cog(FunStuff(bot))
 bot.run(TOKEN)
+startup = False
