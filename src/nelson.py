@@ -14,7 +14,7 @@ from discord.ext import commands
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='/')
 # client = discord.Client()
 rh = reddit.RedditHandler("ncsu")
 
@@ -100,6 +100,6 @@ class FunStuff(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, ctx, member):
         await ctx.send(f'Hi {member.name}, welcome to the server! (´• ω •`)ﾉ')
-
+        
 bot.add_cog(FunStuff(bot))
 bot.run(TOKEN)
