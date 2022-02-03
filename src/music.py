@@ -26,13 +26,9 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='ping-music', help='ping music cog for testing')
-    async def ping(self, ctx):
-        await ctx.send("Pong from Music!")
-
     @commands.command(name='join', help='joins a voice channel')
     async def join(self, ctx):
-        await ctx.send("joining...")
+        await ctx.send("*Joining...*")
         channel = ctx.author.voice.channel
         # print(str(channel))
         await channel.connect()
@@ -65,6 +61,7 @@ class Music(commands.Cog):
 
         await ctx.voice_client.disconnect()
 
+    @join.before_invoke
     @play.before_invoke
     async def ensure_voice(self, ctx):
         if ctx.voice_client is None:

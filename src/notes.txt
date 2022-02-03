@@ -1,0 +1,9 @@
+Nelson v0.2
+What's new:
+===========
+* No more spamming nelson-news: Nelson grabs all the posts in a neat one and done message to post into the channel
+
+* Music is here: Nelson can stream audio from a YouTube link, run "/help" or "@nelson help" to learn more
+
+* Butler: A couple of commands added to give Nelson some more utility
+

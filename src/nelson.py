@@ -7,6 +7,7 @@ from discord.ext.commands.errors import CommandNotFound
 from discord.ext import tasks
 from dotenv import load_dotenv
 import music
+import butler
 
 import reddit
 import copypasta
@@ -104,6 +105,8 @@ class FunStuff(commands.Cog):
             await message.channel.send(copypasta.based_reaction)
         if "periodt" in message_lower or "purr" in message_lower:
             await message.channel.send(copypasta.periodt_purr)
+        if "good bot" in message_lower:
+            await message.channel.send("😊")
 
     @commands.Cog.listener()
 
@@ -114,6 +117,7 @@ class FunStuff(commands.Cog):
         
 bot.add_cog(FunStuff(bot))
 bot.add_cog(music.Music(bot))
+bot.add_cog(butler.Butler(bot))
 
 bot.run(TOKEN)
 startup = False
