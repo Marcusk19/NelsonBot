@@ -6,6 +6,7 @@ from discord import user
 from discord.ext.commands.errors import CommandNotFound
 from discord.ext import tasks
 from dotenv import load_dotenv
+import music
 
 import reddit
 import copypasta
@@ -13,9 +14,8 @@ from discord.ext import commands
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-startup = True
 
-bot = commands.Bot(command_prefix='/')
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("/"))
 # client = discord.Client()
 rh = reddit.RedditHandler("ncsu")
 
@@ -40,15 +40,13 @@ class FunStuff(commands.Cog):
     @commands.Cog.listener("on_ready")
     async def ready(self):
         print('Nelson has connected to Discord!')
-        self.routine_posts.start()
 
     @tasks.loop(hours=24)
     async def routine_posts(self):
         channel = self.bot.get_channel(int(self.channel_id))
         # print(str(channel))
         output_str = self.get_new_post()
-        if not startup:
-            await channel.send(output_str)
+        await channel.send(output_str)
 
 
 # eight ball question event handler
@@ -69,7 +67,7 @@ class FunStuff(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('You need to ask a question first')
 
-    @commands.command(name='roll_dice', help='Generates random number 1-6')
+    @commands.command(name='roll-dice', help='Generates random number 1-6')
     async def roll(self, ctx):
         await ctx.send(random.choice(range(1,6)))
     
@@ -77,17 +75,15 @@ class FunStuff(commands.Cog):
     async def ping_back(self, ctx):
         await ctx.send("ping 👋 😊")
 
-    @commands.command(name='gettop', help='get top 5 posts')
+    @commands.command(name='start-reddit', help='start task for grabbing reddit posts')
     async def gettop(self, ctx):
-        self.get_new_post()
-        await ctx.send("check your posts channel 📮")
+        self.routine_posts.start()
+        await ctx.send("task has started 📮")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, CommandNotFound):
-            await ctx.send("I don't know that command (ಡ‸ಡ)")
-
-# I went crazy on these listener messages
+            await ctx.send("😥 I don't know that command (ಡ‸ಡ)")
 
     @commands.Cog.listener("on_message")
     async def message_parse(self, message):
@@ -109,11 +105,15 @@ class FunStuff(commands.Cog):
         if "periodt" in message_lower or "purr" in message_lower:
             await message.channel.send(copypasta.periodt_purr)
 
+    @commands.Cog.listener()
+
     
     @commands.Cog.listener()
     async def on_member_join(self, ctx, member):
-        await ctx.send(f'Hi {member.name}, welcome to the server! (´• ω •`)ﾉ')
+        await ctx.send(f'Hi {member.name}, welcome to the server!')
         
 bot.add_cog(FunStuff(bot))
+bot.add_cog(music.Music(bot))
+
 bot.run(TOKEN)
 startup = False
