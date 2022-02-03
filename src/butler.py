@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 
 def get_notes():
-    f = open("src/notes.txt", "r")
+    f = open("notes.txt", "r")
     data = f.read()
     f.close()
     return data
