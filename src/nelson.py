@@ -13,11 +13,14 @@ import reddit
 import copypasta
 from discord.ext import commands
 
+intents = discord.Intents.default()
+intents.members = True
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("/"))
-# client = discord.Client()
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("/"), intents=intents)
+
 rh = reddit.RedditHandler("ncsu")
 
 class FunStuff(commands.Cog):
@@ -52,7 +55,7 @@ class FunStuff(commands.Cog):
 
 # eight ball question event handler
     @commands.command(name='ask', help='Responds to yes or no question')
-    async def eightball(self, ctx):
+    async def ask(self, ctx, *, question):
         eightball_responses = [
             'Yes',
             'No',
@@ -61,9 +64,9 @@ class FunStuff(commands.Cog):
             'Ask me later',
         ]  
         response = random.choice(eightball_responses)
-        await ctx.send(response)
+        await ctx.send(question + " - " + response)
 
-    @eightball.error
+    @ask.error
     async def info_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('You need to ask a question first')
@@ -108,12 +111,6 @@ class FunStuff(commands.Cog):
         if "good bot" in message_lower:
             await message.channel.send("😊")
 
-    @commands.Cog.listener()
-
-    
-    @commands.Cog.listener()
-    async def on_member_join(self, ctx, member):
-        await ctx.send(f'Hi {member.name}, welcome to the server!')
         
 bot.add_cog(FunStuff(bot))
 bot.add_cog(music.Music(bot))

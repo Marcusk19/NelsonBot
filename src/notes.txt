@@ -1,4 +1,4 @@
-Nelson v0.2
+Nelson v0.2.1
 What's new:
 ===========
 * No more spamming nelson-news: Nelson grabs all the posts in a neat one and done message to post into the channel
@@ -6,4 +6,8 @@ What's new:
 * Music is here: Nelson can stream audio from a YouTube link, run "/help" or "@nelson help" to learn more
 
 * Butler: A couple of commands added to give Nelson some more utility
+
+* Nelson will alert server to emojis being updated, channels created, or channels deleted
+
+* Better /ask handling
 
