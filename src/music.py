@@ -9,9 +9,11 @@ youtube_dl.utils.bug_reports_message = lambda: ''
 
 
 ytdl_format_options = {
-    'format': 'bestaudio/best',
+    'format': 'bestaudio',
     'noplaylist': 'True',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'source_address': '0.0.0.0', # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'preferredcodec': 'mp3',
+    'preferredquality': '192'
 }
 
 ffmpeg_options = {
@@ -42,18 +44,17 @@ class Music(commands.Cog):
         URL = info['formats'][0]['url']
         source = await discord.FFmpegOpusAudio.from_probe(URL, **ffmpeg_options)
         voice.play(source)
-        await ctx.send('**Now playing:** {}'.format(info['title']))
+        await ctx.send('**Now playing:** {}'.format(info['title']) +  " - " + ctx.author.display_name)
+        await ctx.message.delete()
         print("done")
 
     @commands.command(name='pause', help='pause playback')
     async def pause(self, ctx):
         await ctx.voice_client.pause()
-        await ctx.send("Paused ⏸️")
     
     @commands.command(name='resume', help='resume playback')
     async def resume(self, ctx):
         await ctx.voice_client.resume()
-        await ctx.send("Resumed ▶️")
 
     @commands.command()
     async def stop(self, ctx):

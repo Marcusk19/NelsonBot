@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+from discord.utils import get
 
 def get_notes():
     f = open("notes.txt", "r")
@@ -15,12 +16,13 @@ class Butler(commands.Cog):
         self.bot = bot
         self.channel_id = os.getenv('CHANNEL_ID')
 
-    @commands.command(name='clear', help='purges text channel of messages')
-    async def clear(self, ctx, amount=5):
-        await ctx.channel.purge(limit=amount+1)
+    # @commands.command(name='clear', help='purges text channel of messages')
+    # async def clear(self, ctx, amount=5):
+    #     await ctx.channel.purge(limit=amount+1)
+    #     await ctx.message.delete()
     
-    @commands.command(name='notes', help='displays patch notes')
-    async def notes(self, ctx):
+    @commands.command(name='info', help='displays patch notes')
+    async def info(self, ctx):
         output = get_notes()
         await ctx.send("```" + str(output) + "```")
 
@@ -61,3 +63,21 @@ class Butler(commands.Cog):
     async def on_guild_channel_delete(self, deleted):
         channel = self.bot.get_channel(int(self.channel_id))
         await channel.send(f'channel **{deleted.name}** was deleted')
+    
+    @commands.command(name='request', help='pings server admins for request (requires "Admin" role to exist)')
+    async def request(self, ctx, *, request):
+        admin = get(ctx.guild.roles, name='Admin')
+        await ctx.send("^ " + admin.mention)
+    @request.error
+    async def request_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(ctx.author.display_name + ", please specify your ask")
+
+    @commands.command(name='game', help='pings everyone with associated game role')
+    async def game(self, ctx, *, role):
+        role = get(ctx.guild.roles, name=role)
+        if role is not None:
+            await ctx.send(role.mention + " - " + ctx.author.display_name + " is looking for a game")
+            await ctx.message.delete()
+        else:
+            await ctx.send("could not find that role")
