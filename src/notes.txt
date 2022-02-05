@@ -1,7 +1,11 @@
-Nelson v0.2.2
+Nelson v1.0
 What's new:
 ===========
 * `/notes` changed to `/info`
 
 * Better /ask handling
+
+* Nelson suggest a Nelson-approved stock every day (big thanks to Jackson for building this!)
+
+* New bible-verse command (also built by Jackson)
 

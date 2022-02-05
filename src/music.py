@@ -39,11 +39,12 @@ class Music(commands.Cog):
     async def play(self, ctx, url):
         ctx.voice_client.stop()
         print(str(url))
-        voice = ctx.voice_client
-        info = ytdl.extract_info(url, download=False)
-        URL = info['formats'][0]['url']
-        source = await discord.FFmpegOpusAudio.from_probe(URL, **ffmpeg_options)
+        voice = ctx.voice_client # obtain voice channel
+        info = ytdl.extract_info(url, download=False) # use ytdl to extract source for playback
+        URL = info['formats'][0]['url'] # hmmmm this is probably url formatting
+        source = await discord.FFmpegOpusAudio.from_probe(URL, **ffmpeg_options) # use discord.FFmpegOpusAudio to make source (I think)
         voice.play(source)
+        # print information about what is playing
         await ctx.send('**Now playing:** {}'.format(info['title']) +  " - " + ctx.author.display_name)
         await ctx.message.delete()
         print("done")
@@ -56,12 +57,11 @@ class Music(commands.Cog):
     async def resume(self, ctx):
         await ctx.voice_client.resume()
 
-    @commands.command()
+    @commands.command(name='stop', help='stops playback and disconnects from voice')
     async def stop(self, ctx):
-        """Stops and disconnects the bot from voice"""
-
         await ctx.voice_client.disconnect()
 
+    # check user calling the command is in a voice chananel before running /join or /play
     @join.before_invoke
     @play.before_invoke
     async def ensure_voice(self, ctx):
