@@ -4,14 +4,17 @@ import random
 import discord
 from discord import user
 from discord.ext.commands.errors import CommandNotFound
+from discord.ext import commands
 from discord.ext import tasks
 from dotenv import load_dotenv
+
 import music
 import butler
-
+import stocks
+import bible
 import reddit
 import copypasta
-from discord.ext import commands
+
 
 intents = discord.Intents.default()
 intents.members = True
@@ -115,6 +118,8 @@ class FunStuff(commands.Cog):
 bot.add_cog(FunStuff(bot))
 bot.add_cog(music.Music(bot))
 bot.add_cog(butler.Butler(bot))
+bot.add_cog(stocks.Stocks(bot))
+bot.add_cog(bible.Bible(bot))
 
 bot.run(TOKEN)
 startup = False
