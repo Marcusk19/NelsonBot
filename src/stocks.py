@@ -33,7 +33,7 @@ class Stocks(commands.Cog):
 
         nelsonOracleLens = random.randint(0, len(fullList)-1)
 
-        await channel.send("@here - the daily stock Nelson reccomends 📈 " + fullList[nelsonOracleLens]) 
+        await channel.send("@here - the daily stock Nelson recommends 📈 " + fullList[nelsonOracleLens])
 
     @get_stocks.before_loop
     async def before_get_stocks(self):
