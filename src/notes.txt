@@ -1,5 +1,8 @@
 Nelson v1.01
 What's new:
-===========
+
+* `/notes` changed to `/info`
+* Better /ask handling
 * typo fix - Akshat
+
 
