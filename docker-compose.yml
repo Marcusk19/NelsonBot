@@ -1,1 +1,5 @@
-version: "3.9"
+version: '3'
+services:
+  nelson:
+    build: .
+    container_name: nelson

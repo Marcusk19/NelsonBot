@@ -7,5 +7,3 @@ What's new:
 
 * Nelson suggest a Nelson-approved stock every day (big thanks to Jackson for building this!)
 
-* New bible-verse command (also built by Jackson)
-
