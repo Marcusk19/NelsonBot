@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 import music
 import butler
 import stocks
-import bible
 import reddit
 import copypasta
 
