@@ -28,6 +28,7 @@ multidict==5.2.0
 numpy==1.22.1
 pandas==1.4.0
 parse==1.19.0
+pdfkit==1.0.0
 praw==7.5.0
 prawcore==2.3.0
 pycparser==2.21

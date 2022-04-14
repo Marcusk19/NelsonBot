@@ -2,7 +2,6 @@
 import os
 import random
 import discord
-from discord import user
 from discord.ext.commands.errors import CommandNotFound
 from discord.ext import commands
 from discord.ext import tasks
@@ -13,6 +12,7 @@ import butler
 import stocks
 import reddit
 import copypasta
+import scraper
 
 
 intents = discord.Intents.default()
@@ -118,7 +118,7 @@ bot.add_cog(FunStuff(bot))
 bot.add_cog(music.Music(bot))
 bot.add_cog(butler.Butler(bot))
 bot.add_cog(stocks.Stocks(bot))
-bot.add_cog(bible.Bible(bot))
+bot.add_cog(scraper.Scraper(bot))
 
 bot.run(TOKEN)
 startup = False

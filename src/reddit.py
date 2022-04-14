@@ -1,8 +1,6 @@
 import praw
-import pandas as pd
 import os
 from dotenv import load_dotenv
-from prawcore.exceptions import Forbidden
 
 load_dotenv()
 client_id=os.getenv('REDDIT_CLIENT_ID')
