@@ -28,8 +28,8 @@ class Scraper(commands.Cog):
     
     @commands.command(name='enabledownload', help='enable downloads for link detection')
     async def enabledownload(self, ctx):
-        self.enableDownloads = True
-        await ctx.send("Enabled downloads")
+        self.enableDownloads = False
+        await ctx.send("Downloads are not permitted")
 
     @commands.command(name='disabledownload', help='disable downloads for link detection')
     async def disabledownload(self, ctx):

@@ -3,8 +3,9 @@ services:
   nelson:
     build: .
     container_name: nelson
-    environment:
-      - PYTHONBUFFERED=1
+    # environment:
+    #   # - PYTHONBUFFERED=0
     volumes:
       - ./downloads:/downloads
+      - ./data:/mnt
 

@@ -12,4 +12,4 @@ RUN apt-get install -y wkhtmltopdf
 
 COPY src/ .
 
-CMD [ "python", "./nelson.py"]
+CMD [ "python", "-u", "nelson.py"]

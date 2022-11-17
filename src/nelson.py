@@ -6,24 +6,31 @@ from discord.ext.commands.errors import CommandNotFound
 from discord.ext import commands
 from discord.ext import tasks
 from dotenv import load_dotenv
+import logging
 
 import music
 import butler
 import stocks
-import reddit
+# import reddit
 import copypasta
 import scraper
+import roles
+
 
 
 intents = discord.Intents.default()
 intents.members = True
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
+
 TOKEN = os.getenv('DISCORD_TOKEN')
+logger.info("Token: " + TOKEN)
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("/"), intents=intents)
 
-rh = reddit.RedditHandler("ncsu")
+# rh = reddit.RedditHandler("ncsu")
 
 class FunStuff(commands.Cog):
     def __init__(self, bot):
@@ -45,12 +52,11 @@ class FunStuff(commands.Cog):
     
     @commands.Cog.listener("on_ready")
     async def ready(self):
-        print('Nelson has connected to Discord!')
+        logger.info('Nelson has connected to Discord!')
 
     @tasks.loop(hours=24)
     async def routine_posts(self):
         channel = self.bot.get_channel(int(self.channel_id))
-        # print(str(channel))
         output_str = self.get_new_post()
         await channel.send(output_str)
 
@@ -79,12 +85,14 @@ class FunStuff(commands.Cog):
     
     @commands.command(name='ping', help='Test bot connection')
     async def ping_back(self, ctx):
-        await ctx.send("ping 👋 😊")
+        await ctx.send("pong 👋 😊")
 
-    @commands.command(name='start-reddit', help='start task for grabbing reddit posts')
+    @commands.command(name='start-reddit', help='start task for grabbing reddit posts (under maintenance)')
     async def gettop(self, ctx):
-        self.routine_posts.start()
-        await ctx.send("task has started 📮")
+        # self.routine_posts.start()
+        # await ctx.send("task has started 📮")
+
+        await ctx.send("reddit posts under maintenance")
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
@@ -119,6 +127,7 @@ bot.add_cog(music.Music(bot))
 bot.add_cog(butler.Butler(bot))
 bot.add_cog(stocks.Stocks(bot))
 bot.add_cog(scraper.Scraper(bot))
+bot.add_cog(roles.ReactionRoles(bot))
 
 bot.run(TOKEN)
 startup = False

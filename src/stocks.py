@@ -1,41 +1,51 @@
+from datetime import datetime
 import pandas as finPull
 import random
 from yahoo_fin import stock_info as tick
 from discord.ext import commands, tasks
 import os
+import aiocron
 
 
 class Stocks(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.channel_id = os.getenv('CHANNEL_ID')
-        self.get_stocks.start()
+        # self.get_stocks.start()
 
-    @tasks.loop(hours = 24)
-    async def get_stocks(self):
-        channel = self.bot.get_channel(int(self.channel_id))
+    @tasks.loop(hours = 1)
+    # @aiocron.crontab('* * * * *')
+    async def cronjob(self):
+        def run_job():
+            now = datetime.now()
+            weekday = now.weekday()
+            hour = now.time().hour
+            return 0 <= weekday <= 4 and hour == 8
 
-        sp500tickers = finPull.DataFrame(tick.tickers_sp500())
-        nasdaqtickers = finPull.DataFrame(tick.tickers_nasdaq())
-        dowtickers = finPull.DataFrame(tick.tickers_dow())
+        if run_job():
+            channel = self.bot.get_channel(int(self.channel_id))
 
-        spList = sp500tickers[0].values.tolist()
-        nasdaqList = nasdaqtickers[0].values.tolist()
-        dowList = dowtickers[0].values.tolist()
+            sp500tickers = finPull.DataFrame(tick.tickers_sp500())
+            nasdaqtickers = finPull.DataFrame(tick.tickers_nasdaq())
+            dowtickers = finPull.DataFrame(tick.tickers_dow())
 
-        fullList = spList + nasdaqList + dowList
+            spList = sp500tickers[0].values.tolist()
+            nasdaqList = nasdaqtickers[0].values.tolist()
+            dowList = dowtickers[0].values.tolist()
 
-        badLetters = ['W', 'R', 'P', 'Q']
+            fullList = spList + nasdaqList + dowList
 
-        for ticker in fullList:
-            if len(ticker) > 4 and ticker[-1] in badLetters:
-                fullList.remove(ticker)
+            badLetters = ['W', 'R', 'P', 'Q']
 
-        nelsonOracleLens = random.randint(0, len(fullList)-1)
+            for ticker in fullList:
+                if len(ticker) > 4 and ticker[-1] in badLetters:
+                    fullList.remove(ticker)
 
-        await channel.send("The daily stock Nelson recommends 📈 " + fullList[nelsonOracleLens])
+            nelsonOracleLens = random.randint(0, len(fullList)-1)
 
-    @get_stocks.before_loop
-    async def before_get_stocks(self):
-        await self.bot.wait_until_ready()
+            await channel.send("The daily stock Nelson recommends 📈 " + fullList[nelsonOracleLens])
+
+    # @get_stocks.before_loop
+    # async def before_get_stocks(self):
+    #     await self.bot.wait_until_ready()
         

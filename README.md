@@ -2,6 +2,8 @@
 Discord bot in Python
 
 ## Installation ##
+Optional: run the setup script to create a virtual python environment <br />
+`./venv-setup.sh`
 Clone this repo and then start the bot first building the docker image: <br />
 `docker build -t nelson .`
 Then you can run the container: <br />
